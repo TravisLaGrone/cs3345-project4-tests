@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-//import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -12,83 +11,46 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
-//import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-//import org.junit.rules.Timeout;
+
+import junit.framework.AssertionFailedError;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class RedBlackTreeTest {
 	
-	static final Duration TIMEOUT = Duration.ofSeconds(2);  // maybe make this shorter in practice
+	static final Duration TIMEOUT = Duration.ofMillis(500);
 	
 	RedBlackTree<Integer> tree;
 	
-//	boolean timeout_flag;
-	
-//	@Rule
-//    public Timeout globalTimeout = Timeout.seconds(2); // 2 seconds max per method tested
-//	// this annotation seems to be ignored in junit5
-	
-	@BeforeEach
-	void setUp()
+	@Test
+	void testNew()
 	{
 		assertTimeoutPreemptively(TIMEOUT, () -> {
 			
 		tree = new RedBlackTree<>();		
 		
-		});
+		}, "Timeout... suspected infinite loop");
 	}
 	
-//	@Test
-//    void defendAgainstInfiniteLoops()
-//    {        
-//        assertTimeoutPreemptively(TIMEOUT, () -> {  // perform student-defined operations inside this assertion to defend against any infinite loops
-//        		timeout_flag = true;
-//                tree.insert(10);
-//                tree.insert(85);
-//                tree.insert(15);
-//                tree.insert(70);
-//                tree.insert(20);
-//                tree.insert(60);
-//                tree.insert(30);
-//                tree.insert(50);
-//                tree.insert(65);
-//                tree.insert(80);
-//                tree.insert(90);
-//                tree.insert(40);
-//                tree.insert(5);
-//                tree.insert(55); 
-//                timeout_flag = false;
-//        }, 
-//        		getComment(
-//						"test timeout",
-//						"Procedure: ",
-//						String.valueOf(""),
-//						String.valueOf(""),
-//						50
-//						)
-//        );      
-//    }
+	@BeforeEach
+	void setUp() throws AssertionFailedError
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+		tree = new RedBlackTree<>();		
+		
+		}, "Timeout... suspected infinite loop");
+	}
 	
-//	@Test
-//    public void testSleepForTooLong() throws Exception {
-//        TimeUnit.SECONDS.sleep(3); // sleep for 3 seconds
-//    }	// rule annotation doesn't take effect
 	
-//	@Test
-//	void exitIfTimeout() {
-//	    assumeTrue(timeout_flag);
-//	    System.exit(1);
-//	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
@@ -119,7 +81,7 @@ class RedBlackTreeTest {
 					)
 			);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -142,7 +104,7 @@ class RedBlackTreeTest {
 							)					
 			);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 	}
 	
@@ -172,7 +134,7 @@ class RedBlackTreeTest {
 							)
 			);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -195,7 +157,7 @@ class RedBlackTreeTest {
 							)
 			);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -218,7 +180,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -242,31 +204,44 @@ class RedBlackTreeTest {
 					actual
 					);	
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85)    					
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+		ZIG_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigInsert", ZIG_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigTest
 	{
-		final List<Operation<Integer>> ZIG_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85)    					
-    			)
-    			.collect(Collectors.toList())
-		);
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -290,7 +265,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -314,7 +289,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -338,7 +313,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -362,36 +337,49 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_ZIG_RED_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85),
+					Operation.INSERT(15),
+					Operation.INSERT(90)
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigZigRedSiblingInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+			ZIG_ZIG_RED_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigZigRedSiblingInsert", ZIG_ZIG_RED_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigZigRedSiblingTest
 	{
-		final List<Operation<Integer>> ZIG_ZIG_RED_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85),
-    					Operation.INSERT(15),
-    					Operation.INSERT(90)
-    			)
-    			.collect(Collectors.toList())
-    	);
 		
 		final String caseName = "zig-zig rotation with red parent sibling";
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_ZIG_RED_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -414,7 +402,7 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
-			});
+			}, "Timeout... suspected infinite loop");
 			
 		}
 		
@@ -439,36 +427,49 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_ZAG_RED_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85),
+					Operation.INSERT(15),
+					Operation.INSERT(70)
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigZagRedSiblingInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+			ZIG_ZAG_RED_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigZagRedSiblingInsert", ZIG_ZAG_RED_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigZagRedSiblingTest
 	{
-		final List<Operation<Integer>> ZIG_ZAG_RED_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85),
-    					Operation.INSERT(15),
-    					Operation.INSERT(70)
-    			)
-    			.collect(Collectors.toList())
-    	);
 		
 		final String caseName = "zig-zag rotation with red parent sibling";
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_ZAG_RED_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -492,7 +493,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -516,37 +517,50 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_ZIG_BLACK_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85),
+					Operation.INSERT(15),
+					Operation.INSERT(70),
+					Operation.INSERT(20)
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigZigBlackSiblingInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+			ZIG_ZIG_BLACK_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigZigBlackSiblingInsert", ZIG_ZIG_BLACK_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigZigBlackSiblingTest
 	{
-		final List<Operation<Integer>> ZIG_ZIG_BLACK_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85),
-    					Operation.INSERT(15),
-    					Operation.INSERT(70),
-    					Operation.INSERT(20)
-    			)
-    			.collect(Collectors.toList())
-		);
 		
 		final String caseName = "zig-zig rotation with black parent sibling";
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_ZIG_BLACK_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -570,7 +584,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -594,35 +608,48 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_ZAG_BLACK_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85),
+					Operation.INSERT(15)
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigZagBlackSiblingInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+			ZIG_ZAG_BLACK_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigZagBlackSiblingInsert", ZIG_ZAG_BLACK_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigZagBlackSiblingTest
 	{
-		final List<Operation<Integer>> ZIG_ZAG_BLACK_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85),
-    					Operation.INSERT(15)
-    			)
-    			.collect(Collectors.toList())
-		);
 		
 		final String caseName = "zig-zag rotation with black parent sibling";
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_ZAG_BLACK_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -646,7 +673,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -670,44 +697,57 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_ZIG_RED_RECURSIVE_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85),
+					Operation.INSERT(15),
+					Operation.INSERT(70),
+					Operation.INSERT(20),
+					Operation.INSERT(60),
+					Operation.INSERT(30),
+					Operation.INSERT(50),
+					Operation.INSERT(65),
+					Operation.INSERT(80),
+					Operation.INSERT(90),
+					Operation.INSERT(40)
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigZigRedSiblingRecursiveInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+			ZIG_ZIG_RED_RECURSIVE_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigZigRedSiblingRecursiveInsert", ZIG_ZIG_RED_RECURSIVE_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigZigRedSiblingRecursiveTest
 	{
-		final List<Operation<Integer>> ZIG_ZIG_RED_RECURSIVE_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85),
-    					Operation.INSERT(15),
-    					Operation.INSERT(70),
-    					Operation.INSERT(20),
-    					Operation.INSERT(60),
-    					Operation.INSERT(30),
-    					Operation.INSERT(50),
-    					Operation.INSERT(65),
-    					Operation.INSERT(80),
-    					Operation.INSERT(90),
-    					Operation.INSERT(40)
-    			)
-    			.collect(Collectors.toList())
-    	);
 		
 		final String caseName = "zig-zig rotation with red parent sibling, recursively";
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_ZIG_RED_RECURSIVE_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -731,7 +771,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -755,40 +795,53 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
+	}
+
+	
+	
+	static final List<Operation<Integer>> ZIG_ZAG_RED_RECURSIVE_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
+			Stream.of
+			(
+					Operation.INSERT(10),
+					Operation.INSERT(85),
+					Operation.INSERT(15),
+					Operation.INSERT(70),
+					Operation.INSERT(20),
+					Operation.INSERT(60),
+					Operation.INSERT(30),
+					Operation.INSERT(50)
+			)
+			.collect(Collectors.toList())
+	);
+	
+	@Test
+	void testZigZagRedSiblingRecursiveInsert()
+	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
+			ZIG_ZAG_RED_RECURSIVE_PROCEDURE.forEach(op -> op.executeWith(tree));
+		
+		}, getComment("testZigZagRedSiblingRecursiveInsert", ZIG_ZAG_RED_RECURSIVE_PROCEDURE, "", "", 0));
 	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
 	class ZigZagRedSiblingRecursiveTest
 	{
-		final List<Operation<Integer>> ZIG_ZAG_RED_RECURSIVE_PROCEDURE = Collections.unmodifiableList(  // unmodifiable for defensive programming purposes
-    			Stream.of
-    			(
-    					Operation.INSERT(10),
-    					Operation.INSERT(85),
-    					Operation.INSERT(15),
-    					Operation.INSERT(70),
-    					Operation.INSERT(20),
-    					Operation.INSERT(60),
-    					Operation.INSERT(30),
-    					Operation.INSERT(50)
-    			)
-    			.collect(Collectors.toList())
-		);
 		
 		final String caseName = "zig-zag rotation with RED parent sibling, recursively";
 		
 		@BeforeEach
-		void setUp()
+		void setUp() throws AssertionFailedError
 		{
 			assertTimeoutPreemptively(TIMEOUT, () -> {
 				
 			ZIG_ZAG_RED_RECURSIVE_PROCEDURE.forEach(op -> op.executeWith(tree));
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 			
 		@Test
@@ -812,7 +865,7 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 		@Test
@@ -836,10 +889,12 @@ class RedBlackTreeTest {
 					actual
 					);
 			
-			});
+			}, "Timeout... suspected infinite loop");
 		}
 		
 	}
+
+	
 	
 	///////////////
 	// UTILITIES //
