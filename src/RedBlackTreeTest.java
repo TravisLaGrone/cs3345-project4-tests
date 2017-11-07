@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+//import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -17,13 +17,13 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.Rule;
+//import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.rules.Timeout;
+//import org.junit.rules.Timeout;
 
 @TestInstance(Lifecycle.PER_CLASS)
 class RedBlackTreeTest {
@@ -32,59 +32,63 @@ class RedBlackTreeTest {
 	
 	RedBlackTree<Integer> tree;
 	
-	boolean timeout_flag;
+//	boolean timeout_flag;
 	
-	@Rule
-    public Timeout globalTimeout = Timeout.seconds(2); // 2 seconds max per method tested
-	// this annotation seems to be ignored in junit5
+//	@Rule
+//    public Timeout globalTimeout = Timeout.seconds(2); // 2 seconds max per method tested
+//	// this annotation seems to be ignored in junit5
 	
 	@BeforeEach
 	void setUp()
 	{
+		assertTimeoutPreemptively(TIMEOUT, () -> {
+			
 		tree = new RedBlackTree<>();		
+		
+		});
 	}
 	
-	@Test
-    void defendAgainstInfiniteLoops()
-    {        
-        assertTimeoutPreemptively(TIMEOUT, () -> {  // perform student-defined operations inside this assertion to defend against any infinite loops
-        		timeout_flag = true;
-                tree.insert(10);
-                tree.insert(85);
-                tree.insert(15);
-                tree.insert(70);
-                tree.insert(20);
-                tree.insert(60);
-                tree.insert(30);
-                tree.insert(50);
-                tree.insert(65);
-                tree.insert(80);
-                tree.insert(90);
-                tree.insert(40);
-                tree.insert(5);
-                tree.insert(55); 
-                timeout_flag = false;
-        }, 
-        		getComment(
-						"test timeout",
-						"Procedure: ",
-						String.valueOf(""),
-						String.valueOf(""),
-						50
-						)
-        );      
-    }
+//	@Test
+//    void defendAgainstInfiniteLoops()
+//    {        
+//        assertTimeoutPreemptively(TIMEOUT, () -> {  // perform student-defined operations inside this assertion to defend against any infinite loops
+//        		timeout_flag = true;
+//                tree.insert(10);
+//                tree.insert(85);
+//                tree.insert(15);
+//                tree.insert(70);
+//                tree.insert(20);
+//                tree.insert(60);
+//                tree.insert(30);
+//                tree.insert(50);
+//                tree.insert(65);
+//                tree.insert(80);
+//                tree.insert(90);
+//                tree.insert(40);
+//                tree.insert(5);
+//                tree.insert(55); 
+//                timeout_flag = false;
+//        }, 
+//        		getComment(
+//						"test timeout",
+//						"Procedure: ",
+//						String.valueOf(""),
+//						String.valueOf(""),
+//						50
+//						)
+//        );      
+//    }
 	
 //	@Test
 //    public void testSleepForTooLong() throws Exception {
 //        TimeUnit.SECONDS.sleep(3); // sleep for 3 seconds
 //    }	// rule annotation doesn't take effect
 	
-	@Test
-	void exitIfTimeout() {
-	    assumeTrue(timeout_flag);
-	    System.exit(1);
-	}
+//	@Test
+//	void exitIfTimeout() {
+//	    assumeTrue(timeout_flag);
+//	    System.exit(1);
+//	}
 	
 	@Nested
 	@TestInstance(Lifecycle.PER_CLASS)
@@ -96,6 +100,8 @@ class RedBlackTreeTest {
 		@Test
 		void testInsertNull()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = "NullPointerException";
 			String actual = "";
 			int points = 1;
@@ -112,11 +118,15 @@ class RedBlackTreeTest {
 									)						
 					)
 			);
+			
+			});
 		}
 		
 		@Test
 		void testContainsNull()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			boolean expected = false;
 			boolean actual = tree.contains(NULL_KEY);
 			int points = 1;
@@ -130,7 +140,9 @@ class RedBlackTreeTest {
 									points						
 									)
 							)					
-			);			
+			);
+			
+			});
 		}
 	}
 	
@@ -143,6 +155,8 @@ class RedBlackTreeTest {
 		@Test
 		void testInsert()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			boolean expected = true;
 			boolean actual = tree.insert(EMPTY_KEY);
 			int points = 1;
@@ -157,11 +171,15 @@ class RedBlackTreeTest {
 									)
 							)
 			);
+			
+			});
 		}
 		
 		@Test
 		void testContains()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			boolean expected = false;
 			boolean actual = tree.contains(EMPTY_KEY);
 			int points = 1;
@@ -176,11 +194,15 @@ class RedBlackTreeTest {
 									)
 							)
 			);
+			
+			});
 		}
 		
 		@Test
 		void testToStringEmpty()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = "";
 			String actual = normalizedOutput(tree.toString());
 			int points = 1;
@@ -195,11 +217,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringSingle()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			tree.insert(EMPTY_KEY);
 			String expected = "10";
 			String actual = normalizedOutput(tree.toString());
@@ -215,6 +241,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);	
+			
+			});
 		}
 	}
 	
@@ -229,17 +257,23 @@ class RedBlackTreeTest {
     					Operation.INSERT(85)    					
     			)
     			.collect(Collectors.toList())
-    	);
+		);
 		
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZig1()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(85);
 			boolean expected = true;
@@ -255,11 +289,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testContainsZig2()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(65);
 			boolean expected = false;
@@ -275,11 +313,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testContainsZig3()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(90);
 			boolean expected = false;
@@ -295,11 +337,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringZig()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = "10\t*85";
 			String actual = normalizedOutput(tree.toString());
 			int points = 3;
@@ -315,6 +361,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
@@ -339,12 +387,18 @@ class RedBlackTreeTest {
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_ZIG_RED_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZigZigRed()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(10);
 			boolean expected = true;
@@ -360,11 +414,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			});
+			
 		}
 		
 		@Test
 		void testToStringZigZigRed()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = String.join("\t", "10", "15", "85", "*90");
 			String actual = normalizedOutput(tree.toString());
 			int points = 5;
@@ -380,6 +438,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
@@ -404,12 +464,18 @@ class RedBlackTreeTest {
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_ZAG_RED_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZigZagRed()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(10);
 			boolean expected = true;
@@ -425,11 +491,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringZigZagRed()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = String.join("\t", "10", "15", "*70", "85");
 			String actual = normalizedOutput(tree.toString());
 			int points = 5;
@@ -445,6 +515,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
@@ -463,19 +535,25 @@ class RedBlackTreeTest {
     					Operation.INSERT(20)
     			)
     			.collect(Collectors.toList())
-    	);
+		);
 		
 		final String caseName = "zig-zig rotation with black parent sibling";
 		
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_ZIG_BLACK_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZigZigBlack()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(85);
 			boolean expected = true;
@@ -491,11 +569,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringZigZigBlack()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = String.join("\t", "10", "15", "*20", "70", "*85");
 			String actual = normalizedOutput(tree.toString());
 			int points = 3;
@@ -511,6 +593,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
@@ -527,19 +611,25 @@ class RedBlackTreeTest {
     					Operation.INSERT(15)
     			)
     			.collect(Collectors.toList())
-    	);
+		);
 		
 		final String caseName = "zig-zag rotation with black parent sibling";
 		
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_ZAG_BLACK_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZigZagBlack()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(18);
 			boolean expected = false;
@@ -555,11 +645,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringZigZagBlack()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = String.join("\t", "*10", "15", "*85");
 			String actual = normalizedOutput(tree.toString());
 			int points = 3;
@@ -575,6 +669,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
@@ -607,12 +703,18 @@ class RedBlackTreeTest {
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_ZIG_RED_RECURSIVE_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZigZigRedRecursive()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(60);
 			boolean expected = true;
@@ -628,11 +730,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringZigZigRedRecursive()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = String.join("\t", "10", "15", "20", "30", "*40", "50", "*60", "65", "70", "*80", "85", "*90");
 			String actual = normalizedOutput(tree.toString());
 			int points = 4;
@@ -648,6 +754,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
@@ -669,19 +777,25 @@ class RedBlackTreeTest {
     					Operation.INSERT(50)
     			)
     			.collect(Collectors.toList())
-    	);
+		);
 		
 		final String caseName = "zig-zag rotation with RED parent sibling, recursively";
 		
 		@BeforeEach
 		void setUp()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			ZIG_ZAG_RED_RECURSIVE_PROCEDURE.forEach(op -> op.executeWith(tree));
+			
+			});
 		}
 			
 		@Test
 		void testContainsZigZagRedRecursive()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			int points = 1;
 			boolean actual = tree.contains(15);
 			boolean expected = true;
@@ -697,11 +811,15 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 		@Test
 		void testToStringZigZagRedRecursive()
 		{
+			assertTimeoutPreemptively(TIMEOUT, () -> {
+				
 			String expected = String.join("\t", "10", "*15", "20", "30", "*50", "60", "*70","85");
 			String actual = normalizedOutput(tree.toString());
 			int points = 4;
@@ -717,6 +835,8 @@ class RedBlackTreeTest {
 					expected,
 					actual
 					);
+			
+			});
 		}
 		
 	}
